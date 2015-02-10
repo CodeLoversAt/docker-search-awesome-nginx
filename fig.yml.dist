@@ -1,0 +1,46 @@
+src:
+    image: codelovers/search-awesome-app
+
+hhvm:
+    image: codelovers/search-awesome-hhvm
+    expose:
+        - "9000"
+    volumes_from:
+        - src
+    links:
+        - mongo:mongodb
+    environment:
+        - SYMFONY_SECRET=secr3t
+        - MAILER_HOST=127.0.0.1
+        - MAILER_TRANSPORT=smtp
+        - MAILER_USER=null
+        - MAILER_PASSWORD=null
+        - APP_DOMAIN=search-awesome.com
+        - MONGO_DATABASE=search_awesome_app
+        - RECAPTCHA_PUBLIC_KEY=null
+        - RECAPTCHA_PRIVATE_KEY=null
+        - RECAPTCHA_SESSION_KEY=_recaptcha_valid
+        - DELIVERY_ADDRESS=null
+        - MAILER_PORT=465
+        - MAILER_ENCRYPTION=ssl
+
+maintenance:
+    image: codelovers/search-awesome-maintenance
+    volumes_from:
+        - src
+    links:
+        - mongo:mongodb
+
+mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+
+nginx:
+    image: codelovers/search-awesome-nginx
+    links:
+        - hhvm
+    volumes_from:
+        - src
+    ports:
+        - "8080:6000"
