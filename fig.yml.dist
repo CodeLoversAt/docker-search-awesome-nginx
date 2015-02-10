@@ -25,7 +25,7 @@ hhvm:
         - MAILER_ENCRYPTION=ssl
 
 maintenance:
-    image: codelovers/search-awesome-maintenance
+    image: codelovers/search-awesome-maintena
     volumes_from:
         - src
     links:
